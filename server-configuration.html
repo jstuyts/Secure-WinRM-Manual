@@ -165,8 +165,37 @@
   <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-csc-1')" class="copy-to-clipboard">PS &gt;</span> <span
         id="sc-csc-1">. .\New-SelfSignedCertificateEx.ps1</span>
 <span onclick="selectTextOfElement('sc-csc-2')" class="copy-to-clipboard">PS &gt;</span> <span id="sc-csc-2">$serverCert = New-SelfSignedCertificateEx -Subject "CN=<span
-          class="configuration-dependent-value">&lt;(fully-qualified) hostname&gt;</span>" -EnhancedKeyUsage '1.3.6.1.5.5.7.3.1' -StoreLocation LocalMachine -IsCA $true</span>
-</pre>
+          class="configuration-dependent-value">&lt;(fully-qualified) hostname&gt;</span>" -EnhancedKeyUsage '1.3.6.1.5.5.7.3.1' -StoreLocation LocalMachine -IsCA $true</span></pre>
+
+  <p>The certificate has been added to <code class="command">Cert:\LocalMachine\My\</code> and <code class="command">Cert:\LocalMachine\CA\</code>,
+    using the thumbprint as the child name. </p>
+
+  <p>The thumbprint is going to be needed to verify whether the correct public key has been downloaded by clients, so
+    display it and copy it somewhere:</p>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-sc')"
+        class="copy-to-clipboard">PS &gt;</span> <span id="sc-sc">$serverCert</span></pre>
+
+  <h2>Enabling a Secure WinRM Listener</h2>
+
+  <p>The final step for the Windows server is the addition of a secure WinRM listener. This is done in two steps:
+    creation of the listener and opening of the firewall for it.</p>
+
+  <p>Execute the following command to create the listener. The hostname must match the hostname used when creating the
+    server certificate:</p>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-cswl')"
+        class="copy-to-clipboard">PS &gt;</span> <span id="sc-cswl">winrm create winrm/Config/Listener?Address=*+Transport=HTTPS "@{Hostname=`"<span
+        class="configuration-dependent-value">&lt;(fully-qualified) hostname&gt;</span>`";CertificateThumbprint=`"$($serverCert.ThumbPrint)`"}"</span></pre>
+
+  <p>Next open the firewall for the port (5986). The port is only opened on domain and private networks. If you want
+    WinRM to be available on public networks too, omit <span class="command">profile='domain,private'</span>:</p>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-cswlfr')" class="copy-to-clipboard">PS &gt;</span> <span
+        id="sc-cswlfr">netsh advfirewall firewall add rule name='WinRM-HTTPS' dir=in localport=5986 protocol=TCP profile='domain,private' action=allow</span></pre>
+
+  <p>And that is it for the server configuration. We will return to the server when a local administrator for client
+    connections has to be created. But that is part of the client configuration chapters.</p>
 
 </div>
 
