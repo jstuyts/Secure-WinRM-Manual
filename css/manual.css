@@ -1,0 +1,201 @@
+h1, h2 {
+    font-family: "Trebuchet MS", sans-serif;
+    color: #3B4E6C;
+}
+
+body {
+    padding: 16px;
+    font-family: Georgia, serif;
+}
+
+p {
+    max-width: 40em;
+}
+
+ul {
+    padding-left: 2em;
+    max-width: 38em;
+}
+
+a {
+    text-decoration: none;
+    color: #6688BB;
+}
+
+a:visited {
+    color: #888888;
+}
+
+.windows-client {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    min-height: 48px;
+    background-image: url('../images/windows-client.png');
+    background-position: 16px 16px;
+    background-repeat: no-repeat;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #0178D5;
+    padding-top: 16px;
+    padding-left: 80px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+}
+
+.linux-client {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    min-height: 48px;
+    background-image: url('../images/linux-client.png');
+    background-position: 16px 16px;
+    background-repeat: no-repeat;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #000000;
+    padding-top: 16px;
+    padding-left: 80px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+}
+.windows-server {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    min-height: 48px;
+    background-image: url('../images/windows-server.png');
+    background-position: 16px 16px;
+    background-repeat: no-repeat;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #BABDBD;
+    padding-top: 16px;
+    padding-left: 80px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+}
+
+.important-for-security {
+    max-width: 40em;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.important-for-security > div {
+    min-height: 16px;
+    background-image: url('../images/security.png');
+    background-size: 16px 16px;
+    background-position: 16px 16px;
+    background-repeat: no-repeat;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #FFD700;
+    padding-top: 16px;
+    padding-left: 48px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+}
+
+.windows-client *:first-child, .linux-client *:first-child, .windows-server *:first-child, .important-for-security > div *:first-child {
+    margin-top: 0;
+}
+
+.windows-client *:last-child, .linux-client *:last-child, .windows-server *:last-child, .important-for-security > div *:last-child {
+    margin-bottom: 0;
+}
+
+.powershell {
+    background-color: #012456;
+    padding-top: 16px;
+    padding-left: 48px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    font-family: Consolas, monospace;
+    color: #F0F0F0;
+    overflow-x: scroll;
+}
+
+.powershell-administrator {
+    min-height: 16px;
+    background-color: #012456;
+    background-image: url('../images/security.png');
+    background-size: 16px 16px;
+    background-position: 16px 16px;
+    background-repeat: no-repeat;
+    padding-top: 16px;
+    padding-left: 48px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    font-family: Consolas, monospace;
+    color: #F0F0F0;
+    overflow-x: scroll;
+}
+
+.sh {
+    background-color: #000000;
+    padding-top: 16px;
+    padding-left: 48px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    font-family: Consolas, monospace;
+    color: #E0E0E0;
+    overflow-x: scroll;
+}
+
+.sh-root {
+    min-height: 16px;
+    background-color: #000000;
+    background-image: url('../images/security.png');
+    background-size: 16px 16px;
+    background-position: 16px 16px;
+    background-repeat: no-repeat;
+    padding-top: 16px;
+    padding-left: 48px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    font-family: Consolas, monospace;
+    color: #E0E0E0;
+    overflow-x: scroll;
+}
+
+.configuration-dependent-value {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.copy-to-clipboard {
+    cursor: default;
+}
+
+.command, .url, .prompt, .thumbprint {
+    font-family: Consolas, monospace;
+}
+
+.navigation {
+    display: block;
+    list-style: none;
+    padding-top: 16px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 16px;
+    font-family: "Trebuchet MS", sans-serif;
+}
+
+.previous {
+    display: inline;
+    margin-right: 16px;
+    background-color: #E9EDF4;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.next {
+    display: inline;
+    margin-left: 16px;
+    background-color: #E9EDF4;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.previous > a, .next > a {
+    padding: 16px;
+    color: #000000;
+}

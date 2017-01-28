@@ -2,12 +2,58 @@
 <html>
 <head>
   <title>Secure WinRM - Conventions</title>
+  <link rel="stylesheet" type="text/css" href="css/manual.css">
+  <script language="JavaScript" src="scripts/TextSelection.js"></script>
 </head>
 <body>
 
 <h1>Conventions</h1>
 
-<p>TBD</p>
+<p>The following conventions are used in this manual:</p>
+
+<div class="windows-client">
+  <p>Describes steps that have to be executed on the Windows client.</p>
+</div>
+
+<div class="linux-client">
+  <p>Describes steps that have to be executed on the Linux client.</p>
+</div>
+
+<div class="windows-server">
+  <p>Describes steps that have to be executed on the Windows server.</p>
+</div>
+
+<div class="important-for-security">
+  <div>
+    <p>Provides security information: How do the following instructions ensure security? What other actions must be
+      taken to work securely? What are the implications of making an error?</p>
+  </div>
+</div>
+
+<pre class="powershell"><span onclick="selectTextOfElement('c-ps')" class="copy-to-clipboard">PS &gt;</span> <span
+      id="c-ps">PowerShell command(s) to be executed as a regular user. Configuration-dependent values will be white, bold and in angle brackets: <span
+      class="configuration-dependent-value">&lt;hostname&gt;</span></span></pre>
+
+<pre class="powershell-administrator"><span onclick="selectTextOfElement('c-psa-1')"
+      class="copy-to-clipboard">PS &gt;</span> <span id="c-psa-1">PowerShell command(s) to be executed as an administrator. Configuration-dependent values will be white, bold and in angle brackets: <span
+      class="configuration-dependent-value">&lt;hostname&gt;</span></span>
+<span onclick="selectTextOfElement('c-psa-2')" class="copy-to-clipboard">PS &gt;</span> <span id="c-psa-2">Another command to execute as an administrator.</span></pre>
+
+<pre class="sh"><span onclick="selectTextOfElement('c-ls')" class="copy-to-clipboard">$</span> <span id="c-ls">Linux shell command(s) to be executed as a regular user. Configuration-dependent values will be white, bold and in angle brackets: <span
+      class="configuration-dependent-value">&lt;hostname&gt;</span></span></pre>
+
+<pre class="sh-root"><span onclick="selectTextOfElement('c-lsa-1')" class="copy-to-clipboard">$</span> <span
+      id="c-lsa-1">Linux shell command(s) to be executed as "root". Configuration-dependent values will be white, bold and in angle brackets: <span
+      class="configuration-dependent-value">&lt;hostname&gt;</span></span>
+<span onclick="selectTextOfElement('c-lsa-2')" class="copy-to-clipboard">$</span> <span id="c-lsa-2">Another command to execute as "root".</span></pre>
+
+<p>Clicking on the PowerShell (<code class="prompt">PS &gt;</code>) or Linux shell (<code class="prompt">$</code>)
+  prompt will select the command after the prompt, so it can be copied easily.</p>
+
+<ul class="navigation">
+  <li class="previous"><a href="feedback.html">Previous: Feedback</a></li>
+  <li class="next"><a href="server-configuration.html">Next: Server configuration</a></li>
+</ul>
 
 </body>
 </html>

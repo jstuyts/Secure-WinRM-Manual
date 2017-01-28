@@ -2,12 +2,178 @@
 <html>
 <head>
   <title>Secure WinRM - Server Configuration</title>
+  <link rel="stylesheet" type="text/css" href="css/manual.css">
+  <script language="JavaScript" src="scripts/TextSelection.js"></script>
 </head>
 <body>
 
-<h1>Conventions</h1>
+<h1>Server Configuration</h1>
 
-<p>TBD</p>
+<div class="windows-server">
+  <h2>Enabling WinRM With Default Configuration</h2>
+
+  <p>To keep things simple, we will start with the <a
+        href="https://msdn.microsoft.com/en-us/library/aa384372(v=vs.85).aspx">default configuration of WinRM</a>. This
+    enables some insecure connection methods, but these will be disabled immediately:</p>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-wqc')"
+        class="copy-to-clipboard">PS &gt;</span> <span id="sc-wqc">winrm quickconfig</span></pre>
+
+  <h2>Disabling HTTP Connections</h2>
+
+  <div class="important-for-security">
+    <div>
+      <p>It is very important that you know you are connecting to the correct server. If the client does not verify the
+        server, you could send commands to the remote server that might disclose sensitive information.</p>
+
+      <p>This step will ensure that your server's identity can be verified, but note that servers not under your control
+        may still enable connection methods that prevent the client from verifying that server. So always double-check
+        that you <strong>use the correct connection method on the client</strong>. The chapter about Windows client
+        configuration explains how to force the use of HTTPS.</p>
+    </div>
+  </div>
+
+  <p>The server is now listening for HTTP connections on port 5985. Clients cannot verify the server identity when using
+    HTTP, so the HTTP connection method has to be disables:</p>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-wdhl')"
+        class="copy-to-clipboard">PS &gt;</span> <span id="sc-wdhl">winrm delete winrm/Config/Listener?Address=*+Transport=HTTP</span></pre>
+
+  <p>The firewall rules for the HTTP connection method can also be removed. There are rules for modern and
+    backward-compatible configurations, and all of them will be deleted.</p>
+
+  <p>The name of the backward-compatible rule(s) is language-dependent. The second command can be used to find out the
+    actual name of these rules.</p>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-fdmr')"
+        class="copy-to-clipboard">PS &gt;</span> <span id="sc-fdmr">netsh advfirewall firewall delete rule name='Windows Remote Management (HTTP-In)'</span></pre>
+
+  <pre class="powershell"><span onclick="selectTextOfElement('sc-flbcr')" class="copy-to-clipboard">PS &gt;</span> <span
+        id="sc-flbcr">netsh advfirewall firewall show rule name=all | Select-String 'Windows Remote Management'</span></pre>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-fdbcr')" class="copy-to-clipboard">PS &gt;</span> <span
+        id="sc-fdbcr">netsh advfirewall firewall delete rule name='Windows Remote Management - <span
+        class="configuration-dependent-value">&lt;language-dependent name&gt;</span> (HTTP-In)'</span></pre>
+
+  <h2>Setting the Allowed Authentication Methods</h2>
+
+  <div class="important-for-security">
+    <div>
+      <p>Clients should be able to connect to a server without having to send the user's credentials. And the attack
+        surface of a server should be minimized. So only a minimal and secure set of authentication methods should be
+        enabled.</p>
+
+      <p>This step will ensure that your server is properly configured, but servers not under your control may still
+        allow insecure authentication methods. So always double-check that you <strong>use the correct authentication
+          method on the client</strong>. In the chapter about Windows client configuration, the authentication methods
+        that the WinRM client may use are limited.</p>
+    </div>
+  </div>
+
+  <p>This step is to make sure that only the desired authentication methods are enabled. The insecure ones should be
+    disabled by default. Certificate authentication is disabled by default too, so it needs to be enabled.</p>
+
+  <p>To inspect the current settings run this command:</p>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-wgsac')" class="copy-to-clipboard">PS &gt;</span> <span
+        id="sc-wgsac">winrm get winrm/Config/Service/Auth</span></pre>
+
+  <!-- TODO: Is "negotiate" really needed? -->
+  <p>To allow clients to authenticate using certificates only the negotiate and certificate authentication methods have
+    to be enabled. Whether other authentication methods need to be enabled depends on your environment. For example:
+    Kerberos authentication is used in environments with a domain, so it is very likely that it must be enabled in such
+    environments.</p>
+
+  <p>The only one that must never be enabled is basic authentication, because this will send your password to the
+    server. Credential security support provider (CredSSP) authentication must only be enabled if there is no other
+    option available, as <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb931352(v=vs.85).aspx">it
+      will send your credentials to the server</a>.</p>
+
+  <p>Enable the negotiate and certificate authentication methods. Adjust this to your situation as needed: Match the
+    methods with the ones available in your environment, and enable methods besides negotiate and certificate if
+    needed:</p>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-wssac')" class="copy-to-clipboard">PS &gt;</span> <span
+        id="sc-wssac">winrm set winrm/Config/Service/Auth '@{Basic="false";Kerberos="false";Negotiate="true";Certificate="true";CredSSP="false"}'</span></pre>
+
+  <h2>Checking the Network Category</h2>
+
+  <div class="important-for-security">
+    <div>
+      <p>This step changes the network category of your network connection(s) (if needed). In most cases Windows will
+        have determined the correct network cateogry, but there are some situations (working with virtual machines, for
+        example) where Windows chooses the incorrect network category.</p>
+
+      <p><strong>Never change the network category from public to private if you are not actually on a private
+        network.</strong> Windows will expose a lot more services on a private network, greatly increasing your attack
+        surface. </p>
+    </div>
+  </div>
+
+  <p>WinRM will not allow connections from public networks. In most cases the network connection(s) will be private or
+    domain-authenticated, but in some cases Windows erroneously chooses public. Check the category of the network where
+    your clients are located using the following command:</p>
+
+  <pre class="powershell"><span onclick="selectTextOfElement('sc-gncp')" class="copy-to-clipboard">PS &gt;</span> <span
+        id="sc-gncp">Get-NetConnectionProfile</span></pre>
+
+  <p>If the network category needs to be changed from public to private, run the following command:</p>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-sncp')"
+        class="copy-to-clipboard">PS &gt;</span> <span id="sc-sncp">Set-NetConnectionProfile -InterfaceIndex <span
+        class="configuration-dependent-value">&lt;interface index&gt;</span> -NetworkCategory Private</span></pre>
+
+  <h2>Create the Server Certificate</h2>
+
+  <div class="important-for-security">
+    <div>
+      <p>A script that is not a part of Windows is used in this step. <strong>Never blindly trust scripts you
+        download.</strong> Either make sure that the source can really be trusted, or inspect the script to ensure that
+        it will not harm your system before using it.</p>
+    </div>
+  </div>
+
+  <p>Windows includes a cmdlet with which you can create self-signed certificates, but unfortunately the resulting
+    certificates cannot be used for WinRM authentication. Luckily there is a <a
+          href="https://gallery.technet.microsoft.com/scriptcenter/Self-signed-certificate-5920a7c6">PowerShell script
+      that does generate usable certificates</a> available.</p>
+
+  <p>The (9/11/2016 version of the) <a href="downloads/New-SelfSignedCertificateEx.ps1">script is also included in this
+    manual</a> so you can download it directly using, for example, <code class="command">wget</code> or <code
+        class="command">Invoke-WebRequest</code>. The site above presents a <a
+        href="https://technet.microsoft.com/en-us/cc300389.aspx">license agreement</a> which prevents direct downloads.
+  </p>
+
+  <p>Check that the script has not been modified by checking its signature. The second command shows more detailed
+    information about how the script is signed:</p>
+
+  <pre class="powershell"><span onclick="selectTextOfElement('sc-gas-1')" class="copy-to-clipboard">PS &gt;</span> <span
+        id="sc-gas-1">Get-AuthenticodeSignature New-SelfSignedCertificateEx.ps1</span>
+<span onclick="selectTextOfElement('sc-gas-2')" class="copy-to-clipboard">PS &gt;</span> <span id="sc-gas-2">Get-AuthenticodeSignature New-SelfSignedCertificateEx.ps1 | Format-List *</span></pre>
+
+  <p>Make sure that you verify the certificate subject (CN=Sysadmins LV IK, O=Sysadmins LV IK, L=Riga, C=LV) and
+    thumbprint (<code class="thumbprint">1A8EAB5B0611AC0548F16A1675B8A3915CC2045E</code>) before actually running the
+    script on the server.</p>
+
+  <p>First import the function in the script file, and then create the certificate for the server using the function.
+    The common name (CN) of the subject needs to match the name that you will use to connect to the server later. If you
+    want to use the simple hostname, you can use <code class="command">$env:COMPUTERNAME</code>. The documentation of
+    the script says that friendly names can be used to specify the enhanced key usage, but this does not seem to work
+    everywhere. So the <a href="https://technet.microsoft.com/en-us/library/gg699362.aspx#Anchor_0">OID for server
+      authentication</a> is used here instead:</p>
+
+  <pre class="powershell-administrator"><span onclick="selectTextOfElement('sc-csc-1')" class="copy-to-clipboard">PS &gt;</span> <span
+        id="sc-csc-1">. .\New-SelfSignedCertificateEx.ps1</span>
+<span onclick="selectTextOfElement('sc-csc-2')" class="copy-to-clipboard">PS &gt;</span> <span id="sc-csc-2">$serverCert = New-SelfSignedCertificateEx -Subject "CN=<span
+          class="configuration-dependent-value">&lt;(fully-qualified) hostname&gt;</span>" -EnhancedKeyUsage '1.3.6.1.5.5.7.3.1' -StoreLocation LocalMachine -IsCA $true</span>
+</pre>
+
+</div>
+
+<ul class="navigation">
+  <li class="previous"><a href="conventions.html">Previous: Conventions</a></li>
+  <li class="next"><a href="windows-client-configuration.html">Next: Windows client configuration</a></li>
+</ul>
 
 </body>
 </html>
