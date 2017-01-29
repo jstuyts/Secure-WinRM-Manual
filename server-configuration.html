@@ -81,8 +81,8 @@
   <!-- TODO: Is "negotiate" really needed? -->
   <p>To allow clients to authenticate using certificates only the negotiate and certificate authentication methods have
     to be enabled. Whether other authentication methods need to be enabled depends on your environment. For example:
-    Kerberos authentication is used in environments with a domain, so it is very likely that it must be enabled in such
-    environments.</p>
+    Kerberos authentication is used in environments with Active Directory Domain Services, so it is very likely that it
+    must be enabled in such environments.</p>
 
   <p>The only one that must never be enabled is basic authentication, because this will send your password to the
     server. Credential security support provider (CredSSP) authentication must only be enabled if there is no other
