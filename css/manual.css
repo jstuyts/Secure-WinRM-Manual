@@ -8,7 +8,13 @@ body {
     font-family: Georgia, serif;
 }
 
+p {
+    max-width: 40em;
+    word-wrap: break-word;
+}
+
 ul {
+    max-width: 38em;
     padding-left: 2em;
 }
 
@@ -21,54 +27,37 @@ a:visited {
     color: #888888;
 }
 
-.windows-client {
+.windows-client, .linux-client, .windows-server {
     margin-top: 16px;
     margin-bottom: 16px;
     min-height: 48px;
-    background-image: url('../images/windows-client.png');
     background-position: 16px 16px;
     background-repeat: no-repeat;
     border-style: solid;
     border-width: 2px;
-    border-color: #0178D5;
     padding-top: 16px;
     padding-left: 80px;
     padding-right: 16px;
     padding-bottom: 16px;
+}
+
+.windows-client {
+    background-image: url('../images/windows-client.png');
+    border-color: #0178D5;
 }
 
 .linux-client {
-    margin-top: 16px;
-    margin-bottom: 16px;
-    min-height: 48px;
     background-image: url('../images/linux-client.png');
-    background-position: 16px 16px;
-    background-repeat: no-repeat;
-    border-style: solid;
-    border-width: 2px;
     border-color: #000000;
-    padding-top: 16px;
-    padding-left: 80px;
-    padding-right: 16px;
-    padding-bottom: 16px;
 }
+
 .windows-server {
-    margin-top: 16px;
-    margin-bottom: 16px;
-    min-height: 48px;
     background-image: url('../images/windows-server.png');
-    background-position: 16px 16px;
-    background-repeat: no-repeat;
-    border-style: solid;
-    border-width: 2px;
     border-color: #BABDBD;
-    padding-top: 16px;
-    padding-left: 80px;
-    padding-right: 16px;
-    padding-bottom: 16px;
 }
 
 .important-for-security {
+    max-width: 40em;
     margin-top: 16px;
     margin-bottom: 16px;
 }
@@ -191,7 +180,6 @@ a:visited {
     background-color: #E9EDF4;
     padding-top: 16px;
     padding-bottom: 16px;
-    white-space: nowrap;
 }
 
 .previous > a, .next > a {
@@ -199,22 +187,27 @@ a:visited {
     color: #000000;
 }
 
-@media all and (min-width: 289px) {
-    p {
-        max-width: 40em;
+@media all and (max-width: 384px) {
+    .windows-client, .linux-client, .windows-server {
+        background-position: 8px 16px;
+        background-size: 24px;
+        padding-left: 40px;
+        padding-right: 8px;
     }
 
-    ul {
-        max-width: 38em;
+    .important-for-security > div {
+        background-position: 8px 16px;
+        padding-left: 32px;
+        padding-right: 8px;
     }
 
-    .important-for-security {
-        max-width: 40em;
+    .powershell, .powershell-administrator, .sh, .sh-root {
+        font-size: smaller;
     }
-}
 
-@media all and (max-width: 288px) {
-    body {
-        font-size: 0.3cm;
+    .previous, .next {
+        font-size: small;
+        margin-left: 8px;
+        margin-right: 8px;
     }
 }
