@@ -202,6 +202,9 @@ a:visited {
     }
 
     .powershell, .powershell-administrator, .sh, .sh-root {
+        background-position: 8px 16px;
+        padding-left: 32px;
+        padding-right: 16px;
         font-size: smaller;
     }
 
