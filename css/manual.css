@@ -166,27 +166,32 @@ a:visited {
 .navigation {
     display: block;
     list-style: none;
-    padding-top: 16px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 16px;
+    padding: 0;
     font-family: "Trebuchet MS", sans-serif;
 }
 
 .previous {
-    display: inline;
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 16px;
     margin-right: 16px;
     background-color: #E9EDF4;
     padding-top: 16px;
     padding-bottom: 16px;
+    white-space: nowrap;
 }
 
 .next {
-    display: inline;
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 8px;
     margin-left: 16px;
+    margin-right: 16px;
     background-color: #E9EDF4;
     padding-top: 16px;
     padding-bottom: 16px;
+    white-space: nowrap;
 }
 
 .previous > a, .next > a {
