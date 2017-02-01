@@ -8,13 +8,8 @@ body {
     font-family: Georgia, serif;
 }
 
-p {
-    max-width: 40em;
-}
-
 ul {
     padding-left: 2em;
-    max-width: 38em;
 }
 
 a {
@@ -74,7 +69,6 @@ a:visited {
 }
 
 .important-for-security {
-    max-width: 40em;
     margin-top: 16px;
     margin-bottom: 16px;
 }
@@ -198,4 +192,24 @@ a:visited {
 .previous > a, .next > a {
     padding: 16px;
     color: #000000;
+}
+
+@media (min-width: 7.5cm) {
+    p {
+        max-width: 40em;
+    }
+
+    ul {
+        max-width: 38em;
+    }
+
+    .important-for-security {
+        max-width: 40em;
+    }
+}
+
+@media (max-width: 7.5cm) {
+    body {
+        font-size: 0.3cm;
+    }
 }
