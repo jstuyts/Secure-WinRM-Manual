@@ -85,6 +85,21 @@ a:visited {
     margin-bottom: 0;
 }
 
+.lock-container {
+    position: relative;
+    min-height: 52px;
+}
+
+.lock-powershell, .lock-sh {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 20px;
+    height: 20px;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
 .powershell {
     background-color: #012456;
     padding-top: 16px;
@@ -96,20 +111,8 @@ a:visited {
     overflow-x: scroll;
 }
 
-.powershell-administrator {
-    min-height: 16px;
-    background-color: #012456;
-    background-image: url('../images/security.png');
-    background-size: 16px 16px;
-    background-position: 16px 16px;
-    background-repeat: no-repeat;
-    padding-top: 16px;
-    padding-left: 48px;
-    padding-right: 16px;
-    padding-bottom: 16px;
-    font-family: Consolas, monospace;
-    color: #F0F0F0;
-    overflow-x: scroll;
+.lock-powershell {
+    background-image: url('../images/security-powershell.png');
 }
 
 .sh {
@@ -123,20 +126,8 @@ a:visited {
     overflow-x: scroll;
 }
 
-.sh-root {
-    min-height: 16px;
-    background-color: #000000;
-    background-image: url('../images/security.png');
-    background-size: 16px 16px;
-    background-position: 16px 16px;
-    background-repeat: no-repeat;
-    padding-top: 16px;
-    padding-left: 48px;
-    padding-right: 16px;
-    padding-bottom: 16px;
-    font-family: Consolas, monospace;
-    color: #E0E0E0;
-    overflow-x: scroll;
+.lock-sh {
+    background-image: url('../images/security-sh.png');
 }
 
 .configuration-dependent-value {
@@ -201,8 +192,11 @@ a:visited {
         padding-right: 8px;
     }
 
-    .powershell, .powershell-administrator, .sh, .sh-root {
-        background-position: 8px 16px;
+    .lock-powershell, .lock-sh {
+        left: 8px;
+    }
+
+    .powershell, .sh {
         padding-left: 32px;
         padding-right: 16px;
         font-size: smaller;
