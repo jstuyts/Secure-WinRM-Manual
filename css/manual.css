@@ -126,6 +126,17 @@ a:visited {
     overflow-x: scroll;
 }
 
+.output {
+    background-color: #F0F0F0;
+    padding-top: 16px;
+    padding-left: 48px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    font-family: Consolas, monospace;
+    color: #000000;
+    overflow-x: scroll;
+}
+
 .lock-sh {
     background-image: url('../images/security-sh.png');
 }
@@ -139,7 +150,7 @@ a:visited {
     cursor: default;
 }
 
-.command, .url, .prompt, .thumbprint {
+.command, .path, .url, .prompt, .thumbprint {
     font-family: Consolas, monospace;
 }
 
@@ -196,7 +207,7 @@ a:visited {
         left: 8px;
     }
 
-    .powershell, .sh {
+    .powershell, .sh, .output {
         padding-left: 32px;
         padding-right: 16px;
         font-size: smaller;
