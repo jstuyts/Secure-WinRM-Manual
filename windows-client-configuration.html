@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<p>Status: <strong>DRAFT</strong></p>
+
 <h1>Windows Client Configuration</h1>
 
 <p>The steps that must be run on the Windows client must be run by the user(s) that need to connect to the server.</p>
@@ -27,7 +29,7 @@
   <div class="important-for-security">
     <div>
       <p>This step changes machine-global settings that affects all users of the machine. Make sure you do not break
-        somebody else's set-up.</p>
+        somebody else's setup.</p>
     </div>
   </div>
 
@@ -55,7 +57,7 @@
   <p>Now set the authentication that the client is allowed to use. If you have an environment with Active Directory
     Domain Services, you very likely want to leave Kerberos authentication enabled:</p>
 
-  <!-- TODO: Is "negotiate" really needed? -->
+  <!-- TODO: Document why "negotiate" is needed: Access the (amongst others) WinRM configuration using the "winrm" command. -->
   <div class="lock-container">
     <div class="lock-powershell"></div>
     <pre class="powershell"><span onclick="selectTextOfElement('wccc-scam')" class="copy-to-clipboard">PS &gt; <span
