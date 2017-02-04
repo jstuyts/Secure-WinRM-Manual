@@ -96,20 +96,18 @@
           id="sc-wgsac">winrm get WinRM/Config/Service/Auth</span></span></pre>
   </div>
 
-  <!-- TODO: Document why "negotiate" is needed: Access the (amongst others) WinRM configuration using the "winrm" command. -->
-  <p>To allow clients to authenticate using certificates only the negotiate and certificate authentication methods have
-    to be enabled. Whether other authentication methods need to be enabled depends on your environment. For example:
-    Kerberos authentication is used in environments with Active Directory Domain Services, so it is very likely that it
-    must be enabled in such environments.</p>
+  <p>To allow clients to authenticate using certificates only the certificate authentication method has to be enabled.
+    Negotiate authentication is needed to be able to (amongst others) configure WinRM using the <code class="command">winrm</code>
+    command.</p>
 
-  <p>The only one that must never be enabled is basic authentication, because this will send your password to the
-    server. Credential security support provider (CredSSP) authentication must only be enabled if there is no other
-    option available, as <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb931352(v=vs.85).aspx">it
-      will send your credentials to the server</a>.</p>
+  <p>Whether other authentication methods need to be enabled depends on your environment. For example: Kerberos
+    authentication is used in environments with Active Directory Domain Services, so it is very likely that it must be
+    enabled in such environments.</p>
 
-  <p>Enable the negotiate and certificate authentication methods. Adjust this to your situation as needed: Match the
-    methods with the ones available in your environment, and enable methods besides negotiate and certificate if
-    needed:</p>
+  <p>The methods that must be disabled unless they are needed for a specific use case, are basic and credential security
+    support provider (CredSSP). Basic authentication will send your password to the server. CredSSP <a
+          href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb931352(v=vs.85).aspx">will send your
+      credentials to the server</a>:</p>
 
   <div class="lock-container">
     <div class="lock-powershell"></div>

@@ -37,8 +37,18 @@
     <a href="https://msdn.microsoft.com/en-us/library/aa384372(v=vs.85).aspx#WinRM_Client_Default_Configuration_Settings">By
       default almost all authentication methods are enabled for the WinRM client</a>. Basic authentication sends the
     password to the server, which is always undesirable as a malicious or hacked server can use the password for other
-    purposes. Digest authentication is enabled but not supported by the server. So the first step is to disable the
-    insecure and unusable authentication methods to prevent the client from accidentally using them.</p>
+    purposes. Credential security support provider (CredSSP) authentication behaves similarly to basic authentication
+    and <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb931352(v=vs.85).aspx">will send your
+    credentials to the server</a>, so it should be left disabled if possible. Digest authentication <a
+        href="https://en.wikipedia.org/wiki/Digest_access_authentication#Disadvantages">does not provide the strong
+    security of certificates</a> and is not supported by (modern) WinRM servers.</p>
+
+  <p>The minimal set of authentication methods to enable is certificate and negotiate authentication. Certificate
+    authentication is needed to allow clients to authenticate using certificates. Negotiate authentication is needed to
+    be able to (amongst others) configure WinRM using the <code class="command">winrm</code> command.</p>
+
+  <p>If you have an environment with Active Directory Domain Services, you very likely want to leave Kerberos
+    authentication enabled.</p>
 
   <p>The settings can only be changed if the WinRM service is running. Check if it is already running with the following
     command:</p>
@@ -54,10 +64,8 @@
           id="wccc-sws">(Get-Service WinRM).Start()</span></span></pre>
   </div>
 
-  <p>Now set the authentication that the client is allowed to use. If you have an environment with Active Directory
-    Domain Services, you very likely want to leave Kerberos authentication enabled:</p>
+  <p>Now set the authentication that the client is allowed to use:</p>
 
-  <!-- TODO: Document why "negotiate" is needed: Access the (amongst others) WinRM configuration using the "winrm" command. -->
   <div class="lock-container">
     <div class="lock-powershell"></div>
     <pre class="powershell"><span onclick="selectTextOfElement('wccc-scam')" class="copy-to-clipboard">PS &gt; <span
@@ -72,6 +80,14 @@
         certificate authorities. Verify the thumbprint manually to ensure that you are installing the correct server
         certificate as a certificate authority. After installing the certificate as a certificate authority, all
         certificates signed by that certificate will be accepted without user notification or confirmation.</p>
+
+      <p>Note that the installed certificate is not the only certificate that can identify the server hostname. If
+        somebody can get a certificate authority (that is installed in the client certificate store) to create a
+        certificate for the same server hostname, the client will successfully verify a malicious server that uses the
+        server hostname. If you don't trust certificate authorities (<a
+              href="https://blog.hqcodeshop.fi/archives/330-Whats-wrong-with-HTTPS-Part-2-Untrustworthy-Certificate-Authorities.html">there
+          are reasons to not trust them</a>), you need to pin the server certificate. This is possible but quite
+        cumbersome, and will not be covered by this manual.</p>
     </div>
   </div>
 
@@ -119,8 +135,9 @@
       principal name</a> (upn)</p></li>
   </ul>
 
-  <!-- TODO: Verify, is this true or can any name be used (as long as it is also used when a connection is made)? -->
-  <p>Use your Windows username or Microsoft Account email address for the subject:</p>
+  <p>Every certificate identifies a subject. The subject name can be anything. To make identifying certificates easier,
+    you can, for example, include the client hostname or the certificate purpose. A good value for the subject name is
+    your Windows username or Microsoft Account email address:</p>
 
   <pre class="powershell"><span onclick="selectTextOfElement('wcc-ccc')" class="copy-to-clipboard">PS &gt; <span
         id="wcc-ccc">$winClientCert = New-SelfSignedCertificate -Type Custom -Subject <span
@@ -210,10 +227,11 @@
   <h2>Test Connection on the Client</h2>
 
   <p>Everything should be set up correctly now. There is a cmdlet specifically for testing if everything is working as
-    expected:</p>
+    expected. By using the parameter <code class="command">-Authentication ClientCertificate</code> we force the use of
+    HTTPS:</p>
 
   <pre class="powershell"><span onclick="selectTextOfElement('wcc-tc')" class="copy-to-clipboard">PS &gt; <span
-        id="wcc-tc">Test-WSMan -ComputerName <span class="configuration-dependent-value">&lt;server hostname&gt;</span> -UseSSL -Authentication ClientCertificate -CertificateThumbprint <span
+        id="wcc-tc">Test-WSMan -ComputerName <span class="configuration-dependent-value">&lt;server hostname&gt;</span> -Authentication ClientCertificate -CertificateThumbprint <span
         class="configuration-dependent-value">&lt;client certificate thumbprint&gt;</span></span></span></pre>
 
   <p>You should see output similar to:</p>
@@ -226,7 +244,7 @@ ProductVersion  : OS: 10.0.14393 SP: 0.0 Stack: 3.0</pre>
   <p>If the previous command was successful you can open a PowerShell session on the server:</p>
 
   <pre class="powershell"><span onclick="selectTextOfElement('wcc-eps1')" class="copy-to-clipboard">PS &gt; <span
-        id="wcc-eps1">$session = New-PSSession -ComputerName <span class="configuration-dependent-value">&lt;server hostname&gt;</span> -UseSSL -CertificateThumbprint <span
+        id="wcc-eps1">$session = New-PSSession -ComputerName <span class="configuration-dependent-value">&lt;server hostname&gt;</span> -CertificateThumbprint <span
         class="configuration-dependent-value">&lt;client certificate thumbprint&gt;</span></span></span>
 <span onclick="selectTextOfElement('wcc-eps2')" class="copy-to-clipboard">PS &gt; <span id="wcc-eps2">Enter-PSSession -Session $session</span></span></pre>
 
