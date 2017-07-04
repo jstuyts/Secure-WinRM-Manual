@@ -20,8 +20,25 @@
   there are strict requirements for the certificates used for authentication.</p>
 
 <p>One of the major drawbacks of WinRM is that it does not verify the identity of the server by default. If a server
-  responds to the hostname you entered, the client will happily make a connection. If you use password authentication,
-  your password will be sent to the server.</p>
+  responds to the hostname you entered, the client will happily make a connection. If you use Basic or Negotiate
+  authentication (<a href="https://msdn.microsoft.com/en-us/library/aa384372(v=vs.85).aspx">which are both enabled by
+    default</a>), and the server forces the use of one of these methods, sensitive information that can be used to
+  impersonate you will be sent to the server:</p>
+
+<ul>
+  <li>
+    <p>
+      <a href="https://msdn.microsoft.com/en-us/library/aa384465(v=vs.85).aspx#winrm.gloss_basic_authentication">Basic</a>:
+      Your username and password are sent to the server. This allows the server to impersonate you indefinitely. </p>
+  </li>
+  <li>
+    <p>
+      <a href="https://msdn.microsoft.com/en-us/library/aa384465(v=vs.85).aspx#winrm.gloss_negotiate_authentication">Negotiate</a>:
+      If you are not in a domain, NTLM will be used. In that case, <a
+          href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa378749(v=vs.85).aspx">the encrypted challenge
+      will be sent to the server</a>. Using this response the server can impersonate you for a single session.</p>
+  </li>
+</ul>
 
 <p>This manual contains steps to switch to public key infrastructure (PKI) authentication exclusively. This ensures that
   neither the client nor the server blindly allows connections to unknown hosts, and that no secrets are sent to the

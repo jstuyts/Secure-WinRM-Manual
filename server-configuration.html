@@ -40,7 +40,7 @@
   </div>
 
   <p>The server is now listening for HTTP connections on port 5985. Clients cannot verify the server identity when using
-    HTTP, so the HTTP connection method has to be disables:</p>
+    HTTP, so the HTTP connection method has to be disabled:</p>
 
   <div class="lock-container">
     <div class="lock-powershell"></div>
@@ -97,8 +97,15 @@
   </div>
 
   <p>To allow clients to authenticate using certificates only the certificate authentication method has to be enabled.
-    Negotiate authentication is needed to be able to (amongst others) configure WinRM using the <code class="command">winrm</code>
-    command.</p>
+    Negotiate authentication is needed to be able to (amongst others) locally configure WinRM using the <code
+          class="command">winrm</code> command.</p>
+
+  <div class="important-for-security">
+    <div>
+      <p>Leaving Negotiate authentication on does not result in a security risk as no sensitive information of the
+        server is leaked when a client forces the use of it.</p>
+    </div>
+  </div>
 
   <p>Whether other authentication methods need to be enabled depends on your environment. For example: Kerberos
     authentication is used in environments with Active Directory Domain Services, so it is very likely that it must be
